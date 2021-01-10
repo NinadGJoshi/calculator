@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Calculator</title>
+	<style type="text/css">
+		div{
+			position: absolute;
+			height: 200px;
+			width: 200px;
+			border: 2px solid black;
+			top: 50%;
+			right: 50%;
+		}
+		.display: {
+			position: relative; 
+			width: inherit;
+		}
+		.display_bar{
+			width: 135px;
+		}
+		.keyboard{
+			position: relative;
+			top: 50px;
+			width: inherit;
+			left: 2px;
+		}
+	</style>
+</head>
+<body onload="refresh()">
+
+	<div>
+		<table class="display">
+			<tr><td><input type="text" name="" id="num" disabled class="display_bar"></td>
+			<td><button type="button" id="clear" onclick="refresh()">clear</button></td></tr>
+		</table>
+		<table id="table" class="keyboard">
+			<tr>
+				<td><button id='1'>1</button></td>
+				<td><button id='2'>2</button></td>
+				<td><button id='3'>3</button></td>
+				<td><button id='+'>+</button></td>
+			</tr>
+			<tr>
+				<td><button id='4'>4</button></td>
+				<td><button id='5'>5</button></td>
+				<td><button id='6'>6</button></td>
+				<td><button id='-'>-</button></td>
+			</tr>
+			<tr>
+				<td><button id='7'>7</button></td>
+				<td><button id='8'>8</button></td>
+				<td><button id='9'>9</button></td>
+				<td><button id='*'>*</button></td>			
+			</tr>
+				<td><button id='.'>.</button></td>
+				<td><button id='0'>0</button></td>
+				<td><button id='/'>/</button></td>
+				<td><button id='='>=</button></td>			
+			</tr>
+		</table>
+	</div>
+
+	<script type="text/javascript">
+		var operand1 = 0;
+		var operand2 = 0;
+		var operator = '';
+		function $(id) {
+			// body...
+			return document.getElementById(id);
+		}
+
+		function refresh(){
+			$('num').value = '';
+			operand1 = 0;
+			operand2 = 0;
+			operator = '';
+		}
+
+		function evaluate(opr1,opr,opr2){
+			switch(opr){
+				case '+': $('num').value = (opr1 + opr2);
+						  break;
+				case '-': $('num').value = (opr1 - opr2);
+						  break;
+				case '*': $('num').value = (opr1 * opr2);
+						  break;
+				case '/': $('num').value = (opr1 / opr2);
+						  break;
+			}
+		}
+
+		$('table').onclick = function(event){
+			if(event.target.id !== '+' && event.target.id !== '*' && event.target.id !== '/' && event.target.id !== '-' &&event.target.id !=='='){
+				$('num').value += event.target.id;
+				if(operator === '')
+				operand1 = parseFloat($('num').value);
+			} 
+			else if(event.target.id == '='){
+				let str = $('num').value;
+				console.log(str);
+				operand2 = parseFloat(str.substring(str.indexOf(operator)+1));
+				console.log("operand1 = ",operand1+"operand2 = ",operand2+"operator = ",operator);
+				if(!operand1 && !operand2){
+					$('num').value = "0";
+				}else if(!operand2){
+					$('num').value = operand1;
+				}else evaluate(operand1,operator,operand2);
+			}else{
+				operator = event.target.id;
+				console.log(operator);
+				if(operator.length<2)
+				$('num').value += event.target.id;
+			}
+
+		}
+
+		// $('table').onclick = function(event){
+
+		// }
+	</script>
+</body>
+</html>
